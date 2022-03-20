@@ -1,14 +1,14 @@
-import {SalesPerInterval} from './types';
 import {POST} from '../../utils/api/core/shopApi';
+import {DataPerInterval} from './types';
 
-type SalesPerIntervalFetcher = (
+type DataPerIntervalFetcher = (
   sku: string,
   intervalDays: number,
   startDate: Date,
   endDate: Date,
-) => Promise<SalesPerInterval>;
+) => Promise<DataPerInterval>;
 
-const fetchSalesPerInterval: SalesPerIntervalFetcher = async (
+const fetchDataPerInterval: DataPerIntervalFetcher = async (
   sku,
   intervalDays,
   startDate,
@@ -21,12 +21,12 @@ const fetchSalesPerInterval: SalesPerIntervalFetcher = async (
     endDate: endDate.toISOString().slice(0,10),
   };
 
-  return await POST<SalesPerInterval>(
-    'goodTransactions/getSalesPerInterval',
+  return await POST<DataPerInterval>(
+    'goodTransactions/getDataPerInterval',
     body
   );
 };
 
 export const GoodAnalyticsService = {
-  fetchSalesPerInterval,
+  fetchDataPerInterval,
 }
