@@ -3,6 +3,7 @@ import type {Status} from '../error';
 import {GET_BASE, POST_BASE, POST_MULTIFORM_BASE} from './request';
 import {parseResponseStatus, STATUS_CODE, ApiError} from '../error';
 import type {ApiErrorResponse} from '../error';
+import {AuthService} from '../../../modules/auth';
 
 export async function POST<T>(
   path: string,
@@ -38,7 +39,7 @@ export async function POST_MULTIFORM<T>(
 }
 
 function defaultHeaders() {
-  const token = '';
+  const token = AuthService.getToken();
   return token ? {
     Authorization: token,
   } : {};
@@ -50,5 +51,5 @@ async function preprocessQuery(postQuery: any) {
     return await postQuery.json();
   }
   const errorResponse: ApiErrorResponse = await postQuery.json();
-  throw new ApiError(postQuery.status, errorResponse.message);
+  throw new ApiError(postQuery.status, errorResponse.message, errorResponse.errorCode);
 }

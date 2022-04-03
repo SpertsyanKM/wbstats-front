@@ -4,9 +4,11 @@ import {composeWithDevTools} from 'redux-devtools-extension/developmentOnly';
 import rootReducer from './rootReducer';
 import logger from 'redux-logger';
 import {getAppInitialState} from './utils';
+import {tokenMiddleware} from '../auth';
 
 const middlewares = [
   thunkMiddleware,
+  tokenMiddleware,
   logger,
 ];
 

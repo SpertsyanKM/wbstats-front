@@ -1,5 +1,5 @@
 import {Good} from './types';
-import {GET} from '../../utils/api/core/shopApi';
+import {GET} from '../../utils/api/core/api';
 
 type GoodsFetcher = () => Promise<Good[]>;
 

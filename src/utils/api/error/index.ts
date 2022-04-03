@@ -1,3 +1,5 @@
+import {ApiErrorCode} from './apiErrorCode';
+
 export const STATUS_CODE = {
   // 1xx: Informational
   Informational: 'Informational',
@@ -28,10 +30,12 @@ export function parseResponseStatus(status: number): Status {
 
 export class ApiError extends Error {
   status: string;
+  code: ApiErrorCode;
 
-  constructor(status: string, message: string) {
+  constructor(status: string, message: string, errorCode: ApiErrorCode) {
     super(message);
     this.status = status;
+    this.code = errorCode
     Object.defineProperty(this, 'name', {
       enumerable: false,
       value: this.constructor.name,
@@ -45,6 +49,6 @@ export class ApiError extends Error {
 }
 
 export type ApiErrorResponse = {
-  errorCode: string,
+  errorCode: ApiErrorCode,
   message: string,
 };

@@ -1,4 +1,4 @@
-import {POST} from '../../utils/api/core/shopApi';
+import {POST} from '../../utils/api/core/api';
 import {DataPerInterval} from './types';
 
 type DataPerIntervalFetcher = (
