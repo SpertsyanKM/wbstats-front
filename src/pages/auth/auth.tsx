@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Container, Content, ErrorMessage, StyledInput, SwitchButton} from './authStyles';
 import Button from '../../components/common/button';
 import {AuthService, setAuthToken} from '../../modules/auth';
@@ -8,6 +8,7 @@ import {calculatePasswordHash} from '../../modules/auth/utils';
 import {ApiErrorHandler} from '../../utils/api/error/errorHandler';
 import {useDispatch} from 'react-redux';
 import {setShop} from '../../modules/shop';
+import {useIsAuthorized} from '../../modules/auth/hooks';
 
 type Props = {
   isRegistration?: boolean;
@@ -21,8 +22,15 @@ const Auth: React.FC<Props> = ({isRegistration: isRegistrationInitial = false}) 
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState("");
+  const isAuthorized = useIsAuthorized();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthorized) {
+      navigate(ROUTE_HOME);
+    }
+  }, [isAuthorized, navigate]);
 
   const onAuthClick = useCallback(() => {
     if (!email.length || !password.length) {
@@ -36,15 +44,15 @@ const Auth: React.FC<Props> = ({isRegistration: isRegistrationInitial = false}) 
     AuthService.requestAuth(email, passwordHash)
       .then(authResponse => {
         dispatch(setAuthToken(authResponse.token));
-        setIsLoading(false);
-        navigate(ROUTE_HOME);
       })
       .catch(e => {
         const errorMessage = ApiErrorHandler.handleApiError(e);
         setErrorMessage(errorMessage)
-        setIsLoading(false);
       })
-  }, [email, navigate, password, setErrorMessage, setIsLoading, dispatch]);
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [email, password, setErrorMessage, setIsLoading, dispatch]);
 
   const onRegisterClick = useCallback(() => {
     if (!email.length || !password.length || !passwordConfirmation.length) {
@@ -66,15 +74,15 @@ const Auth: React.FC<Props> = ({isRegistration: isRegistrationInitial = false}) 
         if (authResponse.client.shops.length) {
           dispatch(setShop(authResponse.client.shops[0]));
         }
-        setIsLoading(false);
-        navigate(ROUTE_HOME);
       })
       .catch(e => {
         const errorMessage = ApiErrorHandler.handleApiError(e);
         setErrorMessage(errorMessage)
+      })
+      .finally(() => {
         setIsLoading(false);
       });
-  }, [email, navigate, password, passwordConfirmation, setErrorMessage, setIsLoading, dispatch]);
+  }, [email, password, passwordConfirmation, setErrorMessage, setIsLoading, dispatch]);
 
   const onEmailChange = useCallback(newEmail => {
     setErrorMessage("");

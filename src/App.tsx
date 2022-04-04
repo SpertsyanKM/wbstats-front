@@ -25,6 +25,7 @@ import {selectShop} from './modules/shop/selectors';
 import Loader from './components/common/loader';
 import {ClientService} from './modules/client';
 import {setShop} from './modules/shop';
+import {useIsAuthorized} from './modules/auth/hooks';
 
 const history = createBrowserHistory();
 AuthService.init(store);
@@ -32,11 +33,12 @@ ApiErrorHandler.init(history);
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const isAuthorized = useIsAuthorized();
   const shop = useSelector(selectShop);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (shop) {
+    if (shop || !isAuthorized) {
       setIsLoading(false);
       return;
     }
@@ -47,7 +49,7 @@ const App: React.FC = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [dispatch, setIsLoading, shop]);
+  }, [dispatch, setIsLoading, shop, isAuthorized]);
 
   if (isLoading) {
     return <Loader root />;

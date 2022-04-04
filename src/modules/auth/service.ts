@@ -26,15 +26,9 @@ const requestRegister: RegisterRequester = async (email, passwordHash) => {
   return await POST<RegisterResponse>('auth/register', {email, passwordHash});
 };
 
-type IsAuthorizedChecker = () => boolean;
-const isAuthorized: IsAuthorizedChecker = () => {
-  return !!getToken();
-};
-
 export const AuthService = {
   init,
   getToken,
   requestAuth,
   requestRegister,
-  isAuthorized,
 };

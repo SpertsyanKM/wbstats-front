@@ -22,3 +22,8 @@ export const setCookie: CookieSetter = ({
     expires,
   });
 };
+
+type CookieRemover = (key: string) => void;
+export const removeCookie: CookieRemover = key => {
+  cookies.remove(key);
+};
