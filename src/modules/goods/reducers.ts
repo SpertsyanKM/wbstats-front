@@ -15,12 +15,12 @@ const goodsById = (
 }
 
 const goodIdList = (
-  state: string[] = [],
+  state: string[] | null = null,
   action: ActionSetGoods,
-): string[] => {
+): string[] | null => {
   if (action.type === ACTION_SET_GOODS) {
     const ids = action.goods.map(good => good.id);
-    state = [...state, ...ids];
+    state = [...(state ?? []), ...ids];
   }
 
   return state;

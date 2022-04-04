@@ -1,4 +1,4 @@
-import {Client} from '../client/types';
+import {Client} from '../client';
 
 export type AuthResponse = {
   token: Token;

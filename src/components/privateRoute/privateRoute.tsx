@@ -1,13 +1,25 @@
 import React from 'react';
 import {Navigate, Outlet} from 'react-router-dom';
 import {AuthService} from '../../modules/auth';
-import {ROUTE_AUTH} from '../../utils/route';
+import {ROUTE_AUTH, ROUTE_SHOP_REGISTRATION} from '../../utils/route';
+import {useSelector} from 'react-redux';
+import {selectShop} from '../../modules/shop/selectors';
 
-type Props = {};
+type Props = {
+  shopRequired?: boolean;
+};
 
-const PrivateRoute: React.FC<Props> = () => {
+const PrivateRoute: React.FC<Props> = ({shopRequired = true}) => {
   const isAuthorized = AuthService.isAuthorized();
-  return isAuthorized ? <Outlet /> : <Navigate to={ROUTE_AUTH} />;
+  const shop = useSelector(selectShop);
+
+  if (!isAuthorized) {
+    return <Navigate to={ROUTE_AUTH}/>;
+  }
+  if (shopRequired && !shop) {
+    return <Navigate to={ROUTE_SHOP_REGISTRATION} />
+  }
+  return <Outlet />;
 };
 
 export default PrivateRoute;

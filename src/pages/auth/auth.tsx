@@ -6,6 +6,8 @@ import {useNavigate} from 'react-router';
 import {ROUTE_HOME} from '../../utils/route';
 import {calculatePasswordHash} from '../../modules/auth/utils';
 import {ApiErrorHandler} from '../../utils/api/error/errorHandler';
+import {useDispatch} from 'react-redux';
+import {setShop} from '../../modules/shop';
 
 type Props = {
   isRegistration?: boolean;
@@ -19,6 +21,7 @@ const Auth: React.FC<Props> = ({isRegistration: isRegistrationInitial = false}) 
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onAuthClick = useCallback(() => {
@@ -32,17 +35,16 @@ const Auth: React.FC<Props> = ({isRegistration: isRegistrationInitial = false}) 
     const passwordHash = calculatePasswordHash(password);
     AuthService.requestAuth(email, passwordHash)
       .then(authResponse => {
-        setAuthToken(authResponse.token);
+        dispatch(setAuthToken(authResponse.token));
+        setIsLoading(false);
         navigate(ROUTE_HOME);
       })
       .catch(e => {
         const errorMessage = ApiErrorHandler.handleApiError(e);
         setErrorMessage(errorMessage)
-      })
-      .finally(() => {
         setIsLoading(false);
-      });
-  }, [email, navigate, password, setErrorMessage, setIsLoading]);
+      })
+  }, [email, navigate, password, setErrorMessage, setIsLoading, dispatch]);
 
   const onRegisterClick = useCallback(() => {
     if (!email.length || !password.length || !passwordConfirmation.length) {
@@ -60,17 +62,19 @@ const Auth: React.FC<Props> = ({isRegistration: isRegistrationInitial = false}) 
     const passwordHash = calculatePasswordHash(password);
     AuthService.requestRegister(email, passwordHash)
       .then(authResponse => {
-        setAuthToken(authResponse.token);
+        dispatch(setAuthToken(authResponse.token));
+        if (authResponse.client.shops.length) {
+          dispatch(setShop(authResponse.client.shops[0]));
+        }
+        setIsLoading(false);
         navigate(ROUTE_HOME);
       })
       .catch(e => {
         const errorMessage = ApiErrorHandler.handleApiError(e);
         setErrorMessage(errorMessage)
-      })
-      .finally(() => {
         setIsLoading(false);
       });
-  }, [email, navigate, password, passwordConfirmation, setErrorMessage, setIsLoading]);
+  }, [email, navigate, password, passwordConfirmation, setErrorMessage, setIsLoading, dispatch]);
 
   const onEmailChange = useCallback(newEmail => {
     setErrorMessage("");

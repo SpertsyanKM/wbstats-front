@@ -7,6 +7,7 @@ import {selectSortedGoods} from '../../modules/goods/selectors';
 import Button, {ButtonType} from '../../components/common/button';
 import {useNavigate} from 'react-router';
 import {ROUTE_GOOD} from '../../utils/route';
+import EmptyState from '../../components/emptyState';
 
 type Props = {};
 
@@ -16,7 +17,7 @@ const Goods: React.FC<Props> = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!goods?.length) {
+    if (!goods) {
       dispatch(requestGoods());
     }
   }, [goods, dispatch]);
@@ -27,8 +28,8 @@ const Goods: React.FC<Props> = () => {
 
   return (
     <Container>
-      {!goods?.length && <Loader root/>}
-      {goods.map(good => (
+      {!goods && <Loader root/>}
+      {goods?.map(good => (
         <Button
           key={good.id}
           buttonType={ButtonType.Secondary}
@@ -36,6 +37,9 @@ const Goods: React.FC<Props> = () => {
           label={`${good.originSku}${good.colorSku}`}
         />
       ))}
+      {goods?.length === 0 && (
+        <EmptyState text="Товаров пока нет" />
+      )}
     </Container>
   );
 };

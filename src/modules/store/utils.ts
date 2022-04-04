@@ -8,9 +8,11 @@ type AppInitialStateGetter = () => PreloadedState<AppState>;
 export const getAppInitialState: AppInitialStateGetter = () => {
   const token = getCookieValueByKey<Token | undefined>(COOKIE_KEY_TOKEN);
 
-  return {
+  const state = {
     auth: {
       token,
-    }
+    },
   };
+  console.log('Initial state:', state);
+  return state;
 };

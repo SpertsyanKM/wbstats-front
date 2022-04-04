@@ -41,7 +41,7 @@ export async function POST_MULTIFORM<T>(
 function defaultHeaders() {
   const token = AuthService.getToken();
   return token ? {
-    Authorization: token,
+    Authorization: token.token,
   } : {};
 }
 
