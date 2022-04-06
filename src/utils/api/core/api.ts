@@ -1,4 +1,3 @@
-import type {URIFile} from '../../types/commonTypes';
 import type {Status} from '../error';
 import {GET_BASE, POST_BASE, POST_MULTIFORM_BASE} from './request';
 import {parseResponseStatus, STATUS_CODE, ApiError} from '../error';
@@ -28,7 +27,7 @@ export async function GET<T>(path: string, headers?: {}): Promise<T> {
 
 export async function POST_MULTIFORM<T>(
   path: string,
-  file: URIFile,
+  file: File,
   headers?: {},
 ): Promise<T> {
   const postQuery = await POST_MULTIFORM_BASE(path, file, {

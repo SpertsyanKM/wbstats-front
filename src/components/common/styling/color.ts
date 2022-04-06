@@ -4,6 +4,7 @@ const Color = {
   Grey: '#E9E9E9',
   MediumGrey: '#9a9a9a',
   LightGrey: 'rgb(249, 249, 249)',
+  LightTransparentGrey: '#00000020',
   DarkGrey: 'rgba(0,0,0,0.7)',
   White: 'white',
   WhiteHovered: '#f7f7f7',

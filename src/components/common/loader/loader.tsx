@@ -1,6 +1,6 @@
 import React from 'react';
 import {LoaderSize} from './types';
-import {Container, Square} from './loaderStyles';
+import {AbsoluteContainer, Container, Square} from './loaderStyles';
 import {SquareCountInAColumn, SquareCountInARow} from './constants';
 
 type Props = {
@@ -23,11 +23,14 @@ const Loader: React.FC<Props> = ({size, root = false, absolute = false, classNam
     }
   }
 
-  return (
+  const loader = (
     <Container size={size} root={root} absolute={absolute} className={className}>
       {squares}
     </Container>
   );
+  return absolute ? (
+    <AbsoluteContainer>{loader}</AbsoluteContainer>
+  ) : loader;
 };
 
 export default Loader;

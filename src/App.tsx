@@ -52,7 +52,7 @@ const App: React.FC = () => {
   }, [dispatch, setIsLoading, shop, isAuthorized]);
 
   if (isLoading) {
-    return <Loader root />;
+    return <Loader root absolute />;
   }
 
   return (

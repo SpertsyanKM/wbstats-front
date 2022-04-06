@@ -19,7 +19,7 @@ const goodIdList = (
   action: ActionSetGoods,
 ): string[] | null => {
   if (action.type === ACTION_SET_GOODS) {
-    const ids = action.goods.map(good => good.id);
+    const ids = action.goods.map(good => good.id).filter(id => !state?.includes(id));
     state = [...(state ?? []), ...ids];
   }
 

@@ -1,6 +1,7 @@
 import {LoaderSize} from './types';
 import styled, {keyframes} from 'styled-components';
 import {RootLoaderHeight, SquareCountInAColumn, SquareCountInARow} from './constants';
+import {Color} from '../styling';
 
 type ContainerProps = {
   size: LoaderSize;
@@ -15,6 +16,16 @@ const SquareSize = {
   [LoaderSize.XL]: 50,
 };
 
+export const AbsoluteContainer = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background: ${Color.LightTransparentGrey};
+`;
+
 export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-wrap: wrap;
@@ -28,7 +39,8 @@ export const Container = styled.div<ContainerProps>`
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-    ` : undefined} 
+      z-index: 1000;
+    ` : undefined}
 `;
 
 const ScaleAnimation = keyframes`

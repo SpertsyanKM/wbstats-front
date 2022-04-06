@@ -1,5 +1,4 @@
 import {SERVER_URL} from './serverConstants';
-import type {URIFile} from '../../types/commonTypes';
 
 export async function POST_BASE(
   path: string,
@@ -27,16 +26,16 @@ export async function GET_BASE(path: string, headers?: {}): Promise<Response> {
 
 export async function POST_MULTIFORM_BASE(
   path: string,
-  file: URIFile,
+  file: File,
   headers?: {},
 ): Promise<Response> {
   const formData = new FormData();
   // @ts-ignore
   formData.append('file', file);
   return fetch(SERVER_URL + '/' + path, {
-    method: 'POST_BASE',
+    method: 'POST',
     headers: {
-      'Content-Type': 'multipart/form-data',
+      // 'Content-Type': 'multipart/form-data',
       ...headers,
     },
     body: formData,

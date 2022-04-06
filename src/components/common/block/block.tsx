@@ -18,7 +18,7 @@ const Block: React.FC<Props> = ({
 }) => (
   <Container
     root={!!root}
-    size={!!root || !size ? BlockSize.S12 : size}
+    size={(!!root || !size) ? BlockSize.S12 : size}
     className={className}
     {...rest}
   >
