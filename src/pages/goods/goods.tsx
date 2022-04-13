@@ -82,6 +82,10 @@ const Goods: React.FC<Props> = () => {
     ? "Остатки загружаются. Это может занять некоторое время."
     : areStocksLoaded ? "Дата последнего обновления - " + lastLoadingDate : "";
 
+  const totalQuantity = Object.values(wbStocks).map(stock => stock.quantity).reduce((a, b) => a + b, 0)
+  const totalToClient = Object.values(wbStocks).map(stock => stock.inWayToClient).reduce((a, b) => a + b, 0)
+  const totalFromClient = Object.values(wbStocks).map(stock => stock.inWayFromClient).reduce((a, b) => a + b, 0)
+
   return (
     <Container>
       {(!goods || isLoadingFile || isLoading) && <Loader absolute root/>}
@@ -108,6 +112,16 @@ const Goods: React.FC<Props> = () => {
               </>
             )}
           </TitleRow>
+          {areStocksLoaded && (
+            <tr>
+              <td>Всего</td>
+              <td />
+              <td />
+              <CenteredSell>{totalQuantity}</CenteredSell>
+              <CenteredSell>{totalToClient}</CenteredSell>
+              <CenteredSell>{totalFromClient}</CenteredSell>
+            </tr>
+          )}
             {goods.map(good => {
               const stocks = wbStocks[good.nomenclature];
               return (
