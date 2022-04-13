@@ -1,4 +1,4 @@
-import {Good} from './types';
+import {Good, WBStock} from './types';
 import {GET, POST_MULTIFORM} from '../../utils/api/core/api';
 import {SimpleBooleanResponse} from '../../utils/types/commonTypes';
 
@@ -12,7 +12,13 @@ const enrichGoods: GoodsEnricher = async file => {
   return await POST_MULTIFORM<SimpleBooleanResponse>('goods/enrichFromCsv', file);
 };
 
+type WbStocksFetcher = () => Promise<WBStock[]>;
+const fetchWbStocks: WbStocksFetcher = async () => {
+  return await GET<WBStock[]>('goods/wbStocks');
+}
+
 export const GoodsService = {
   fetchGoods,
   enrichGoods,
+  fetchWbStocks,
 };

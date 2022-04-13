@@ -1,5 +1,5 @@
 import {Selector} from '../../utils/types/redux';
-import {Good} from './types';
+import {Good, WBStock} from './types';
 import {AppState} from 'Types';
 import {Goods} from './reducers';
 
@@ -16,3 +16,5 @@ export const selectSortedGoods: Selector<Good[] | null> = state => {
 }
 
 export const selectGoodById = (state: AppState, id?: string) => id ? selectGoodsById(state)[id] : undefined;
+
+export const selectWbStocksById: Selector<Record<string, WBStock>> = state => selectGoods(state).wbStocksByNmId;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Block from '../../components/common/block';
-import Button from '../../components/common/button';
+import Button, {ButtonType} from '../../components/common/button';
 import {Color, Padding, Typography} from '../../components/common/styling';
 
 export const Container = styled(Block).attrs({
@@ -13,6 +13,24 @@ export const Container = styled(Block).attrs({
 export const AddGoodsButton = styled(Button)`
   margin-top: ${Padding.l};
   align-self: center;
+`;
+
+export const LoadStocksRow = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  margin-top: ${Padding.l};
+  align-items: center;
+`;
+
+export const LoadStocksButton = styled(Button).attrs({
+  buttonType: ButtonType.Secondary
+})`
+`;
+
+export const LastStocksLoadingDate = styled.span`
+  ${Typography.secondary.m.regular}
+  margin-left: ${Padding.m};
 `;
 
 export const StyledTable = styled.table`
@@ -29,4 +47,8 @@ export const ClickableRow = styled.tr`
   &:hover {
     background: ${Color.Grey};
   }
+`;
+
+export const CenteredSell = styled.td`
+  text-align: center;
 `;

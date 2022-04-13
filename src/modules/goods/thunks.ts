@@ -1,11 +1,19 @@
 import {Thunk} from '../../utils/types/redux';
-import {setGoods} from './actions';
+import {setGoods, setWbStocks} from './actions';
 import {GoodsService} from './service';
 
-type RequestFeaturedGoodsThunkAction = (onComplete?: () => void) => Thunk;
-export const requestGoods: RequestFeaturedGoodsThunkAction = (onComplete?: () => void) => dispatch => {
+type RequestGoodsThunkAction = (onComplete?: () => void) => Thunk;
+export const requestGoods: RequestGoodsThunkAction = onComplete => dispatch => {
   GoodsService.fetchGoods().then(goods => {
     dispatch(setGoods(goods));
+    onComplete?.();
+  });
+};
+
+type RequestWbStocksThunkAction = (onComplete?: () => void) => Thunk;
+export const requestWbStocks: RequestWbStocksThunkAction = onComplete => dispatch => {
+  GoodsService.fetchWbStocks().then(wbStocks => {
+    dispatch(setWbStocks(wbStocks));
     onComplete?.();
   });
 };
