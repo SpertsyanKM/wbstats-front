@@ -5,7 +5,7 @@ import Home from './pages/home';
 import Header from './components/header';
 import Goods from './pages/goods';
 import {
-  ROUTE_AUTH,
+  ROUTE_AUTH, ROUTE_FINANCES,
   ROUTE_GOOD,
   ROUTE_GOODS,
   ROUTE_HOME,
@@ -26,6 +26,7 @@ import Loader from './components/common/loader';
 import {ClientService} from './modules/client';
 import {setShop} from './modules/shop';
 import {useIsAuthorized} from './modules/auth/hooks';
+import Finances from './pages/finances';
 
 const history = createBrowserHistory();
 AuthService.init(store);
@@ -67,6 +68,9 @@ const App: React.FC = () => {
           </Route>
           <Route path={ROUTE_GOODS} element={<PrivateRoute />}>
             <Route path={ROUTE_GOODS} element={<Goods />}/>
+          </Route>
+          <Route path={ROUTE_FINANCES} element={<PrivateRoute />}>
+            <Route path={ROUTE_FINANCES} element={<Finances />}/>
           </Route>
           <Route path={`${ROUTE_GOOD}/:id`} element={<PrivateRoute />}>
             <Route path={`${ROUTE_GOOD}/:id`} element={<Good />}/>

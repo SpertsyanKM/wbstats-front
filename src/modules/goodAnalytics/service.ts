@@ -1,5 +1,5 @@
-import {POST} from '../../utils/api/core/api';
-import {DataPerInterval} from './types';
+import {GET, POST} from '../../utils/api/core/api';
+import {DataPerInterval, FinancialDataWrapper} from './types';
 
 type DataPerIntervalFetcher = (
   sku: string,
@@ -27,6 +27,13 @@ const fetchDataPerInterval: DataPerIntervalFetcher = async (
   );
 };
 
+type FinancialDataFetcher = () => Promise<FinancialDataWrapper>;
+
+const fetchFinancialData: FinancialDataFetcher = async () => {
+  return await GET<FinancialDataWrapper>('goodTransactions/getFinancialData');
+};
+
 export const GoodAnalyticsService = {
   fetchDataPerInterval,
-}
+  fetchFinancialData,
+};

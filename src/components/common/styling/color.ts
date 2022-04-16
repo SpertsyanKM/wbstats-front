@@ -19,7 +19,9 @@ const Color = {
   BorderFocused: 'rgba(129,129,129,.30)',
   BorderRed: '#dd1111cc',
   BorderRedFocused: '#dd1111ff',
-  Shadow: 'rgb(0 0 0 / 15%)'
+  Shadow: 'rgb(0 0 0 / 15%)',
+  ChartRed: '#d51531',
+  ChartGreen: '#277007',
 };
 
 export default Color;

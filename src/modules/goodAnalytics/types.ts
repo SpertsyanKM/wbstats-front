@@ -13,3 +13,18 @@ export type DataPerInterval = {
   totalEarnings: number;
   totalReturnOutcomes: number;
 };
+
+export type FinancialData = {
+  earnings: number;
+  saleCount: number;
+  deliveryCosts: number;
+  deliveryCount: number;
+  returnOutcomes: number;
+  returnCount: number;
+};
+
+export type FinancialDataWrapper = {
+  financialDataPerInterval: Record<string, FinancialData>;
+  totals: FinancialData;
+  lastReportDate: string | null;
+};

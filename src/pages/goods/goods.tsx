@@ -7,7 +7,8 @@ import {
   TitleRow,
   LoadStocksButton,
   LoadStocksRow,
-  LastStocksLoadingDate, CenteredSell
+  LastStocksLoadingDate,
+  CenteredSell
 } from './goodsStyles';
 import Loader from '../../components/common/loader';
 import {useDispatch, useSelector} from 'react-redux';
@@ -32,7 +33,7 @@ const Goods: React.FC<Props> = () => {
   }] = useFilePicker({
     accept: '.csv',
     multiple: false,
-    readAs: "DataURL",
+    readAs: 'DataURL',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingStocks, setIsLoadingStocks] = useState(false);
@@ -66,7 +67,6 @@ const Goods: React.FC<Props> = () => {
       return;
     }
     setIsLoading(true);
-    console.log('sending file: ', plainFiles[0]);
     GoodsService.enrichGoods(plainFiles[0])
       .then(response => {
         if (response.success) {
@@ -92,7 +92,6 @@ const Goods: React.FC<Props> = () => {
       {goods?.length === 0 && (
         <EmptyState text="Товаров пока нет" />
       )}
-      <AddGoodsButton label="Добавить товары" onClick={onAddGoodsClick} />
       <LoadStocksRow>
         <LoadStocksButton label="Загрузить остатки WB" onClick={onLoadWbStocksClick} />
         {!!stocksLoadingMessage && <LastStocksLoadingDate>{stocksLoadingMessage}</LastStocksLoadingDate>}
@@ -142,6 +141,7 @@ const Goods: React.FC<Props> = () => {
           </tbody>
         </StyledTable>
       )}
+      <AddGoodsButton label="Добавить товары" onClick={onAddGoodsClick} />
     </Container>
   );
 };

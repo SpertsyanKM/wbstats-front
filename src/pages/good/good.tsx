@@ -56,9 +56,18 @@ const Good: React.FC<Props> = () => {
                 <td>Возвраты</td>
                 <td>Сумма возвратов</td>
               </TitleRow>
+              <TitleRow>
+                <td>Итого:</td>
+                <td>{dataPerInterval.totalOrders}</td>
+                <td>{dataPerInterval.totalDeliveryCosts}</td>
+                <td>{dataPerInterval.totalSales}</td>
+                <td>{dataPerInterval.totalEarnings}</td>
+                <td>{dataPerInterval.totalReturns}</td>
+                <td>{dataPerInterval.totalReturnOutcomes}</td>
+              </TitleRow>
               {
                 Object.keys(dataPerInterval.sales).map(intervalBeginning => (
-                  <tr>
+                  <tr key={intervalBeginning}>
                     <td>{intervalBeginning}</td>
                     <td>{dataPerInterval.orders[intervalBeginning]}</td>
                     <td>{dataPerInterval.deliveryCosts[intervalBeginning]}</td>
@@ -69,15 +78,6 @@ const Good: React.FC<Props> = () => {
                   </tr>
                 ))
               }
-              <TitleRow>
-                <td>Итого:</td>
-                <td>{dataPerInterval.totalOrders}</td>
-                <td>{dataPerInterval.totalDeliveryCosts}</td>
-                <td>{dataPerInterval.totalSales}</td>
-                <td>{dataPerInterval.totalEarnings}</td>
-                <td>{dataPerInterval.totalReturns}</td>
-                <td>{dataPerInterval.totalReturnOutcomes}</td>
-              </TitleRow>
             </tbody>
           </StyledTable>
         </>

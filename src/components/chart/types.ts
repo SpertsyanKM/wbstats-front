@@ -13,6 +13,8 @@ export type ChartLine = {
 
 export type ChartData = {
   xAxisName?: string;
+  xAxisFrom?: ChartValue;
   yAxisName?: string;
+  yAxisFrom?: ChartValue;
   lines: ChartLine[];
 };

@@ -10,7 +10,9 @@ export const Container = styled(Block).attrs({
   position: relative;
 `;
 
-export const AddGoodsButton = styled(Button)`
+export const AddGoodsButton = styled(Button).attrs({
+  buttonType: ButtonType.Secondary
+})`
   margin-top: ${Padding.l};
   align-self: center;
 `;

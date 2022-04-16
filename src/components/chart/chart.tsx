@@ -33,8 +33,8 @@ const Chart: React.FC<Props> = ({
       }}
     >
       <CartesianGrid strokeDasharray="3 3"/>
-      <XAxis dataKey={xAxisDataKey} name={data.xAxisName} />
-      <YAxis name={data.yAxisName} />
+      <XAxis dataKey={xAxisDataKey} name={data.xAxisName} from={data.xAxisFrom} />
+      <YAxis name={data.yAxisName} from={data.yAxisFrom} />
       <Tooltip/>
       <Legend/>
       {data.lines.map((chartLine, index) => (
