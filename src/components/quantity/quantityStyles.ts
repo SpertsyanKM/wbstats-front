@@ -9,10 +9,16 @@ export const Container = styled.div`
   flex-direction: row;
 `;
 
+type ButtonProps = {
+  quantitySize: QuantitySize;
+};
 export const QuantityButton = styled(Button).attrs({
   buttonType: ButtonType.Secondary,
   size: ButtonSize.S
-})`
+})<ButtonProps>`
+  ${props => props.quantitySize === QuantitySize.XS ? `
+    padding: 0 ${Padding.xs} 0 ${Padding.xs};
+  ` : undefined}
 `;
 
 type InputProps = {
@@ -21,11 +27,17 @@ type InputProps = {
 export const QuantityInput = styled(Input)<InputProps>`
   padding-left: ${Padding.xxs};
   padding-right: ${Padding.xxs};
-  ${(props: InputProps) => props.quantitySize === QuantitySize.Small ? `
+  ${(props: InputProps) => (props.quantitySize === QuantitySize.S || props.quantitySize === QuantitySize.XS) ? `
   padding-top: 0;
   padding-bottom: 0;
   ` : undefined}
-  max-width: ${(props: InputProps) => props.quantitySize === QuantitySize.Big ? '40' : '32'}px;
+  max-width: ${(props: InputProps) => 
+    props.quantitySize === QuantitySize.L
+      ? '40'
+      : props.quantitySize === QuantitySize.S
+        ? '32'
+        : '20'
+  }px;
   border-left-width: 0;
   border-right-width: 0;
   &:focus {

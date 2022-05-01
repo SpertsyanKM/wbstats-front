@@ -1,8 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Container, QuantityButton, QuantityInput} from './quantityStyles';
 import {getOnlyNumeric} from '../../utils/string';
-import {TypographySize} from '../common/styling';
 import {QuantitySize} from './types';
+import {TypographySize} from '../common/styling';
 
 type Props = {
   initialCount: number;
@@ -16,7 +16,7 @@ const Quantity: React.FC<Props> = ({
   initialCount,
   maxCount,
   onCountChanged: onCountChangedCallback,
-  size = QuantitySize.Big,
+  size = QuantitySize.L,
   className,
 }) => {
   const [count, setStateCount] = useState(initialCount);
@@ -40,15 +40,23 @@ const Quantity: React.FC<Props> = ({
 
   return (
     <Container className={className}>
-      <QuantityButton label="-" onClick={() => setCount(Math.max(1, count - 1))} />
+      <QuantityButton
+        quantitySize={size}
+        label="-"
+        onClick={() => setCount(Math.max(1, count - 1))}
+      />
       <QuantityInput
         quantitySize={size}
-        size={TypographySize.S}
+        size={size === QuantitySize.XS ? TypographySize.XS : TypographySize.S}
         customStateManagement
         value={count.toString()}
         onChange={onCountChanged}
       />
-      <QuantityButton label="+" onClick={() => setCount(count + 1)} />
+      <QuantityButton
+        quantitySize={size}
+        label="+"
+        onClick={() => setCount(count + 1)}
+      />
     </Container>
   );
 };

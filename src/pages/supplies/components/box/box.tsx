@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {Box, BoxGood, removeBox, setGoodToBox} from '../../../../modules/supply';
+import {Box, BoxGood, removeBox, removeBoxGood, setGoodToBox} from '../../../../modules/supply';
 import {
   BoxTitle,
   BoxText,
@@ -36,6 +36,10 @@ const BoxView: React.FC<Props> = ({box}) => {
     dispatch(removeBox(box));
   }, [dispatch, box]);
 
+  const onRemoveGoodClick = useCallback((boxGood: BoxGood) => {
+    dispatch(removeBoxGood(boxGood, box));
+  }, [dispatch, box]);
+
   const onGoodsOverlayClose = useCallback(() => {
     setIsGoodOverlayVisible(false);
   }, [setIsGoodOverlayVisible])
@@ -59,6 +63,7 @@ const BoxView: React.FC<Props> = ({box}) => {
               key={good.goodId}
               boxGood={good}
               onGoodCountChanged={onGoodCountChanged}
+              onRemoveClicked={onRemoveGoodClick}
             />
           ))}
         </GoodsContainer>

@@ -1,4 +1,5 @@
 export enum QuantitySize {
-  Small,
-  Big,
+  XS,
+  S,
+  L,
 }

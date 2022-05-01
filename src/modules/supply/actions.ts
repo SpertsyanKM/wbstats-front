@@ -27,3 +27,11 @@ export const setGoodToBox = (
   box,
   good,
 });
+
+export const ACTION_REMOVE_BOX_GOOD = 'ACTION_REMOVE_BOX_GOOD';
+export type ActionRemoveBoxGood = Action<typeof ACTION_REMOVE_BOX_GOOD> & {good: BoxGood; box: Box};
+export const removeBoxGood = (good: BoxGood, box: Box): ActionRemoveBoxGood => ({
+  type: ACTION_REMOVE_BOX_GOOD,
+  good,
+  box,
+});

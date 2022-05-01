@@ -4,7 +4,7 @@ import {
   Padding,
   StyleConstants,
   Typography,
-  TypographyConfig,
+  TypographyConfig, TypographySize,
 } from '../styling';
 import ReactInputMask from 'react-input-mask';
 
@@ -14,7 +14,11 @@ type Props = {
 };
 
 export const StyledInput = styled.input<Props>`
-  padding: ${Padding.m};
+  ${props => props.config.size === TypographySize.XS ? `
+    padding: 0 ${Padding.xs} 0 ${Padding.xs};
+  ` : `
+    padding: ${Padding.m};
+  `}
   border: ${StyleConstants.borderThinWidth} solid ${props => props.isError ? Color.BorderRed : Color.Border};
   flex: 0;
   ${(props: Props) => Typography[props.config.theme][props.config.size][props.config.weight]}
