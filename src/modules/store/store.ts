@@ -5,10 +5,12 @@ import rootReducer from './rootReducer';
 import logger from 'redux-logger';
 import {getAppInitialState} from './utils';
 import {tokenMiddleware} from '../auth';
+import {newSupplyMiddleware} from '../supply/middlewares';
 
 const middlewares = [
   thunkMiddleware,
   tokenMiddleware,
+  newSupplyMiddleware,
   logger,
 ];
 

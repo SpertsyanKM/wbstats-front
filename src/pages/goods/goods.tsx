@@ -13,17 +13,18 @@ import {
 import Loader from '../../components/common/loader';
 import {useDispatch, useSelector} from 'react-redux';
 import {requestGoods, requestWbStocks} from '../../modules/goods/thunks';
-import {selectSortedGoods, selectWbStocksById} from '../../modules/goods/selectors';
+import {selectWbStocksById} from '../../modules/goods/selectors';
 import {useNavigate} from 'react-router';
 import {ROUTE_GOOD} from '../../utils/route';
 import EmptyState from '../../components/emptyState';
 import {useFilePicker} from 'use-file-picker';
 import {GoodsService} from '../../modules/goods/service';
+import {useGoods} from '../../modules/goods/hooks';
 
 type Props = {};
 
 const Goods: React.FC<Props> = () => {
-  const goods = useSelector(selectSortedGoods);
+  const [goods, isLoadingGoods] = useGoods();
   const wbStocks = useSelector(selectWbStocksById);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,12 +43,6 @@ const Goods: React.FC<Props> = () => {
     setIsLoading(true);
     dispatch(requestGoods(() => setIsLoading(false)));
   }, [dispatch, setIsLoading]);
-
-  useEffect(() => {
-    if (!goods) {
-      fetchGoods()
-    }
-  }, [goods, fetchGoods]);
 
   const onGoodClick = useCallback(goodId => {
     navigate(`${ROUTE_GOOD}/${goodId}`);
@@ -88,7 +83,7 @@ const Goods: React.FC<Props> = () => {
 
   return (
     <Container>
-      {(!goods || isLoadingFile || isLoading) && <Loader absolute root/>}
+      {(!goods || isLoadingFile || isLoadingGoods || isLoading) && <Loader absolute root/>}
       {goods?.length === 0 && (
         <EmptyState text="Товаров пока нет" />
       )}
