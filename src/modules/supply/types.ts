@@ -4,7 +4,6 @@ export type Supply = {
 
 export type Box = {
   index: number;
-  barcode: string;
   goods: BoxGood[];
 }
 

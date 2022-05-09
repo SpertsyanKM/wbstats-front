@@ -16,7 +16,6 @@ const newSupplyBoxes = (
   if (action.type === ACTION_ADD_BOX) {
     const box: Box = {
       index: state.length,
-      barcode: "",
       goods: [],
     };
     state = [...state, box];
