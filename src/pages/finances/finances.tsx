@@ -1,19 +1,22 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+  AdditionalText,
+  Buttons,
   Container,
-  UploadReportButton,
   SectionTitle,
   StyledChart,
-  AdditionalText,
   StyledTable,
-  TitleRow
+  TitleRow,
+  UploadReportButton
 } from './financesStyles';
 import {FinancialDataWrapper} from '../../modules/goodAnalytics/types';
 import Loader from '../../components/common/loader';
-import {GoodAnalyticsService} from '../../modules/goodAnalytics/service';
-import {GoodsService} from '../../modules/goods/service';
+import {GoodsService} from '../../modules/goods';
 import {useFilePicker} from 'use-file-picker';
-import {convertFinancialDataToChart} from './utils';
+import {convertFinancialDataToChart, getFinancialDataFetcherByInterval, getFinancialDataTitleByInterval} from './utils';
+import {FinancialDataInterval} from './types';
+import Button, {ButtonSize, ButtonType} from '../../components/common/button';
+import {formatPrice} from '../../utils/string';
 
 type Props = {};
 
@@ -21,6 +24,7 @@ const Finances: React.FC<Props> = () => {
   const [financialDataWrapper, setFinancialDataWrapper] = useState<FinancialDataWrapper | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploadingReport, setIsUploadingReport] = useState(false);
+  const [interval, setInterval] = useState(FinancialDataInterval.PER_DAY);
   const [openFileSelector, {
     plainFiles,
     loading: isLoadingFile,
@@ -32,11 +36,11 @@ const Finances: React.FC<Props> = () => {
 
   const loadFinancialData = useCallback(() => {
     setIsLoading(true);
-    GoodAnalyticsService
-      .fetchFinancialData()
+    const fetcher = getFinancialDataFetcherByInterval(interval);
+    fetcher()
       .then(setFinancialDataWrapper)
       .finally(() => setIsLoading(false))
-  }, [setIsLoading, setFinancialDataWrapper]);
+  }, [setIsLoading, setFinancialDataWrapper, interval]);
 
   useEffect(() => {
     loadFinancialData()
@@ -62,20 +66,21 @@ const Finances: React.FC<Props> = () => {
 
   const additionalText = !!financialDataWrapper?.lastReportDate
     ? `Последняя дата в отчётах - ${financialDataWrapper?.lastReportDate}`
-    : 'Нет данных в отчётах за последние 30 дней';
+    : 'Нет данных в отчётах';
 
+  const title = getFinancialDataTitleByInterval(interval);
   const dataPerInterval = financialDataWrapper?.financialDataPerInterval;
   return (
     <Container>
       {isLoading && <Loader absolute root/>}
-      <UploadReportButton
-        label="Загрузить отчёт о продажах WB"
-        onClick={onUploadReportClick}
-        isLoading={isLoadingFile || isUploadingReport}
-      />
+      <Buttons>
+        <Button buttonType={ButtonType.Tertiary} size={ButtonSize.L} label="По дням" onClick={() => setInterval(FinancialDataInterval.PER_DAY)} />
+        <Button buttonType={ButtonType.Tertiary} size={ButtonSize.L} label="По неделям" onClick={() => setInterval(FinancialDataInterval.PER_WEEK)} />
+        <Button buttonType={ButtonType.Tertiary} size={ButtonSize.L} label="По месяцам" onClick={() => setInterval(FinancialDataInterval.PER_MONTH)} />
+      </Buttons>
       {dataPerInterval && (
         <>
-          <SectionTitle>Продажи по дням за 30 дней</SectionTitle>
+          <SectionTitle>{title}</SectionTitle>
           <StyledChart
             data={convertFinancialDataToChart(dataPerInterval)}
           />
@@ -95,22 +100,22 @@ const Finances: React.FC<Props> = () => {
             </TitleRow>
             <TitleRow>
               <td>Итого:</td>
-              <td>{financialDataWrapper.totals.earnings}</td>
+              <td>{formatPrice(financialDataWrapper.totals.earnings)}</td>
               <td>{financialDataWrapper.totals.saleCount}</td>
-              <td>{financialDataWrapper.totals.returnOutcomes}</td>
+              <td>{formatPrice(financialDataWrapper.totals.returnOutcomes)}</td>
               <td>{financialDataWrapper.totals.returnCount}</td>
-              <td>{financialDataWrapper.totals.deliveryCosts}</td>
+              <td>{formatPrice(financialDataWrapper.totals.deliveryCosts)}</td>
               <td>{financialDataWrapper.totals.deliveryCount}</td>
             </TitleRow>
             {
               Object.keys(dataPerInterval).map(intervalBeginning => (
                 <tr key={intervalBeginning}>
                   <td>{intervalBeginning}</td>
-                  <td>{dataPerInterval[intervalBeginning].earnings}</td>
+                  <td>{formatPrice(dataPerInterval[intervalBeginning].earnings)}</td>
                   <td>{dataPerInterval[intervalBeginning].saleCount}</td>
-                  <td>{dataPerInterval[intervalBeginning].returnOutcomes}</td>
+                  <td>{formatPrice(dataPerInterval[intervalBeginning].returnOutcomes)}</td>
                   <td>{dataPerInterval[intervalBeginning].returnCount}</td>
-                  <td>{dataPerInterval[intervalBeginning].deliveryCosts}</td>
+                  <td>{formatPrice(dataPerInterval[intervalBeginning].deliveryCosts)}</td>
                   <td>{dataPerInterval[intervalBeginning].deliveryCount}</td>
                 </tr>
               ))
@@ -119,6 +124,11 @@ const Finances: React.FC<Props> = () => {
           </StyledTable>
         </>
       )}
+      <UploadReportButton
+        label="Загрузить отчёт о продажах WB"
+        onClick={onUploadReportClick}
+        isLoading={isLoadingFile || isUploadingReport}
+      />
     </Container>
   );
 };

@@ -37,3 +37,13 @@ export const getOnlyNumericAndDot: GetOnlyNumericAndDot = s => {
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 type EmailValidator = (email: string) => boolean;
 export const isValidEmail: EmailValidator = email => EMAIL_REGEX.test(email)
+
+type PriceFormatter = (price: number) => string;
+export const formatPrice: PriceFormatter = price => {
+  const rounded = Math.round(price);
+  let priceStr = '' + rounded;
+  for (let i = priceStr.length - 3; i >= 0; i -= 3) {
+    priceStr = priceStr.substring(0, i) + ' ' + priceStr.substring(i);
+  }
+  return priceStr;
+};

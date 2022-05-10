@@ -1,6 +1,8 @@
-import {FinancialData} from '../../modules/goodAnalytics/types';
+import {FinancialData, FinancialDataWrapper} from '../../modules/goodAnalytics/types';
 import {ChartData, ChartDot, ChartLine} from '../../components/chart';
 import {Color} from '../../components/common/styling';
+import {FinancialDataInterval} from './types';
+import {FinancialDataFetcher, GoodAnalyticsService} from '../../modules/goodAnalytics/service';
 
 type FinancialDataToChartConverter = (
   financialDataPerInterval: Record<string, FinancialData>,
@@ -46,3 +48,27 @@ export const convertFinancialDataToChart: FinancialDataToChartConverter = (
 
   return chartData;
 };
+
+type FinancialDataFetcherByIntervalGetter = (interval: FinancialDataInterval) => FinancialDataFetcher;
+export const getFinancialDataFetcherByInterval: FinancialDataFetcherByIntervalGetter = interval => {
+  switch (interval) {
+    case FinancialDataInterval.PER_DAY:
+      return GoodAnalyticsService.fetchFinancialDataPerDay;
+    case FinancialDataInterval.PER_WEEK:
+      return GoodAnalyticsService.fetchFinancialDataPerWeek;
+    case FinancialDataInterval.PER_MONTH:
+      return GoodAnalyticsService.fetchFinancialDataPerMonth;
+  }
+};
+
+type FinancialDataTitleByIntervalGetter = (interval: FinancialDataInterval) => string;
+export const getFinancialDataTitleByInterval: FinancialDataTitleByIntervalGetter = interval => {
+  switch (interval) {
+    case FinancialDataInterval.PER_DAY:
+      return "Продажи по дням за 30 дней";
+    case FinancialDataInterval.PER_WEEK:
+      return "Продажи по неделям за год";
+    case FinancialDataInterval.PER_MONTH:
+      return "Продажи по месяцам за год";
+  }
+}

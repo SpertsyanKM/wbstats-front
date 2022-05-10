@@ -27,13 +27,23 @@ const fetchDataPerInterval: DataPerIntervalFetcher = async (
   );
 };
 
-type FinancialDataFetcher = () => Promise<FinancialDataWrapper>;
+export type FinancialDataFetcher = () => Promise<FinancialDataWrapper>;
 
-const fetchFinancialData: FinancialDataFetcher = async () => {
-  return await GET<FinancialDataWrapper>('goodTransactions/getFinancialData');
+const fetchFinancialDataPerDay: FinancialDataFetcher = async () => {
+  return await GET<FinancialDataWrapper>('goodTransactions/getFinancialDataPerDay');
+};
+
+const fetchFinancialDataPerWeek: FinancialDataFetcher = async () => {
+  return await GET<FinancialDataWrapper>('goodTransactions/getFinancialDataPerWeek');
+};
+
+const fetchFinancialDataPerMonth: FinancialDataFetcher = async () => {
+  return await GET<FinancialDataWrapper>('goodTransactions/getFinancialDataPerMonth');
 };
 
 export const GoodAnalyticsService = {
   fetchDataPerInterval,
-  fetchFinancialData,
+  fetchFinancialDataPerDay,
+  fetchFinancialDataPerWeek,
+  fetchFinancialDataPerMonth,
 };

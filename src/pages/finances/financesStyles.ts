@@ -10,6 +10,12 @@ export const Container = styled(Block).attrs({
   flex-direction: column;
 `;
 
+export const Buttons = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+`;
+
 export const UploadReportButton = styled(Button).attrs({
   buttonType: ButtonType.Secondary
 })`
