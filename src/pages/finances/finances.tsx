@@ -9,12 +9,11 @@ import {
   TitleRow,
   UploadReportButton
 } from './financesStyles';
-import {FinancialDataWrapper} from '../../modules/goodAnalytics/types';
+import {FinancialDataInterval, FinancialDataWrapper} from '../../modules/goodAnalytics';
 import Loader from '../../components/common/loader';
 import {GoodsService} from '../../modules/goods';
 import {useFilePicker} from 'use-file-picker';
 import {convertFinancialDataToChart, getFinancialDataFetcherByInterval, getFinancialDataTitleByInterval} from './utils';
-import {FinancialDataInterval} from './types';
 import Button, {ButtonSize, ButtonType} from '../../components/common/button';
 import {formatPrice} from '../../utils/string';
 
@@ -97,6 +96,7 @@ const Finances: React.FC<Props> = () => {
               <td>Количество возвратов</td>
               <td>Расходы на логистику</td>
               <td>Количество заказов/доставок</td>
+              <td>Доход</td>
             </TitleRow>
             <TitleRow>
               <td>Итого:</td>
@@ -106,6 +106,7 @@ const Finances: React.FC<Props> = () => {
               <td>{financialDataWrapper.totals.returnCount}</td>
               <td>{formatPrice(financialDataWrapper.totals.deliveryCosts)}</td>
               <td>{financialDataWrapper.totals.deliveryCount}</td>
+              <td>{formatPrice(financialDataWrapper.totals.totalEarnings)}</td>
             </TitleRow>
             {
               Object.keys(dataPerInterval).map(intervalBeginning => (
@@ -117,6 +118,7 @@ const Finances: React.FC<Props> = () => {
                   <td>{dataPerInterval[intervalBeginning].returnCount}</td>
                   <td>{formatPrice(dataPerInterval[intervalBeginning].deliveryCosts)}</td>
                   <td>{dataPerInterval[intervalBeginning].deliveryCount}</td>
+                  <td>{formatPrice(dataPerInterval[intervalBeginning].totalEarnings)}</td>
                 </tr>
               ))
             }

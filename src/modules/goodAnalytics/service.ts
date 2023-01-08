@@ -1,5 +1,5 @@
 import {GET, POST} from '../../utils/api/core/api';
-import {DataPerInterval, FinancialDataWrapper} from './types';
+import {DataPerInterval, FinancialDataPerGoodWrapper, FinancialDataWrapper} from './types';
 
 type DataPerIntervalFetcher = (
   sku: string,
@@ -41,9 +41,26 @@ const fetchFinancialDataPerMonth: FinancialDataFetcher = async () => {
   return await GET<FinancialDataWrapper>('goodTransactions/getFinancialDataPerMonth');
 };
 
+export type FinancialDataPerGoodFetcher = () => Promise<FinancialDataPerGoodWrapper>;
+
+const fetchFinancialDataPerGoodPerDay: FinancialDataPerGoodFetcher = async () => {
+  return await GET<FinancialDataPerGoodWrapper>('goodTransactions/getFinancialDataPerGoodPerDay');
+};
+
+const fetchFinancialDataPerGoodPerWeek: FinancialDataPerGoodFetcher = async () => {
+  return await GET<FinancialDataPerGoodWrapper>('goodTransactions/getFinancialDataPerGoodPerWeek');
+};
+
+const fetchFinancialDataPerGoodPerMonth: FinancialDataPerGoodFetcher = async () => {
+  return await GET<FinancialDataPerGoodWrapper>('goodTransactions/getFinancialDataPerGoodPerMonth');
+};
+
 export const GoodAnalyticsService = {
   fetchDataPerInterval,
   fetchFinancialDataPerDay,
   fetchFinancialDataPerWeek,
   fetchFinancialDataPerMonth,
+  fetchFinancialDataPerGoodPerDay,
+  fetchFinancialDataPerGoodPerWeek,
+  fetchFinancialDataPerGoodPerMonth,
 };

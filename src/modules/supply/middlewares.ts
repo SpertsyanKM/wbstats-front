@@ -1,13 +1,21 @@
 import * as Redux from 'redux';
 import {AppState} from 'Types';
 import {AnyAction} from 'redux';
-import {ACTION_ADD_BOX, ACTION_REMOVE_BOX, ACTION_SET_GOOD_TO_BOX} from './actions';
+import {
+  ACTION_ADD_BOX,
+  ACTION_ADD_BOXES,
+  ACTION_REMOVE_ALL_BOXES,
+  ACTION_REMOVE_BOX,
+  ACTION_SET_GOOD_TO_BOX
+} from './actions';
 import {setCookie} from '../../utils/cookie';
 import {COOKIE_KEY_NEW_SUPPLY} from './constants';
 
 const supplyCookieActions = [
   ACTION_ADD_BOX,
+  ACTION_ADD_BOXES,
   ACTION_REMOVE_BOX,
+  ACTION_REMOVE_ALL_BOXES,
   ACTION_SET_GOOD_TO_BOX,
 ];
 

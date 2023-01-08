@@ -31,13 +31,13 @@ export const exportSupplyToWbOrderXlsx: SupplyToWbOrderXlsxExporter = (supply, g
 
 type SupplyToWbBoxesXlsxExporter = (supply: Supply, goodsById: Record<string, Good>, wbFirstBoxId: number) => void;
 export const exportSupplyToWbBoxesXlsx: SupplyToWbBoxesXlsxExporter = (supply, goodsById, wbFirstBoxId) => {
-  let data = [["ШК единицы товара", "Кол-во товаров", "Уникальный ШК короба/Палеты", "срок годности", "Если товар с Кизом, заполните – Да"]];
+  let data = [["шк единицы товара", "кол-во товаров", "если товар с кизом, заполните – да", "шк короба", "срок годности"]];
   supply.boxes.forEach(box => {
     const boxBarcode = WB_BOX_ID_PREFIX + wbFirstBoxId.toString();
     box.goods.forEach(boxGood => {
       const good = goodsById[boxGood.goodId];
       if (good) {
-        data.push([good.barcode, boxGood.count.toString(), boxBarcode, "", ""]);
+        data.push([good.barcode, boxGood.count.toString(), "нет", boxBarcode, ""]);
       }
     });
     wbFirstBoxId++;

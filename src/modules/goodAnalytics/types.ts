@@ -21,6 +21,7 @@ export type FinancialData = {
   deliveryCount: number;
   returnOutcomes: number;
   returnCount: number;
+  totalEarnings: number;
 };
 
 export type FinancialDataWrapper = {
@@ -28,3 +29,14 @@ export type FinancialDataWrapper = {
   totals: FinancialData;
   lastReportDate: string | null;
 };
+
+export type FinancialDataPerGoodWrapper = {
+  financialDataPerInterval: Record<number, FinancialDataWrapper>;
+  lastReportDate: string | null;
+};
+
+export enum FinancialDataInterval {
+  PER_DAY,
+  PER_WEEK,
+  PER_MONTH
+}

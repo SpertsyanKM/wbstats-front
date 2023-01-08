@@ -1,16 +1,19 @@
 import React, {useCallback, useState} from 'react';
 import {
   AddBoxButton,
+  AddBoxesRow,
+  AddBoxesButton,
   BoxesContainer,
   Container,
   Title,
+  WbBoxCountInput,
   WbBoxIdInput,
   WbBoxIdPrefix,
   WbButton,
   WbButtonContainer
 } from './suppliesStyles';
 import {useDispatch, useSelector} from 'react-redux';
-import {addBox, Box, selectNewSupplyBoxes, Supply} from '../../modules/supply';
+import {addBox, addBoxes, Box, removeAllBoxes, selectNewSupplyBoxes, Supply} from '../../modules/supply';
 import BoxView from './components/box';
 import {selectGoodsById, useGoods} from '../../modules/goods';
 import Loader from '../../components/common/loader';
@@ -22,9 +25,26 @@ type Props = {};
 const Supplies: React.FC<Props> = () => {
   const newSupplyBoxes = useSelector(selectNewSupplyBoxes);
   const dispatch = useDispatch();
+
+  const [boxCount, setBoxCount] = useState('');
+
   const onAddBoxClick = useCallback(() => {
     dispatch(addBox());
   }, [dispatch]);
+
+  const onAddBoxesClick = useCallback(() => {
+    try {
+      const count = parseInt(boxCount)
+      dispatch(addBoxes(count));
+    } catch (e) {
+      // ignore
+    }
+  }, [dispatch, boxCount]);
+
+  const onRemoveAllBoxesClick = useCallback(() => {
+    dispatch(removeAllBoxes());
+  }, [dispatch]);
+
   const [goods, isLoadingGoods] = useGoods();
   const goodsById = useSelector(selectGoodsById);
   const [wbFirstBoxId, setWbFirstBoxId] = useState("");
@@ -60,6 +80,11 @@ const Supplies: React.FC<Props> = () => {
         </>
       )}
       <AddBoxButton onClick={onAddBoxClick} label="Добавить коробку"/>
+      <AddBoxesRow>
+        <WbBoxCountInput value={boxCount} onChange={setBoxCount} />
+        <AddBoxesButton onClick={onAddBoxesClick} label="Добавить коробки"/>
+      </AddBoxesRow>
+      <AddBoxButton onClick={onRemoveAllBoxesClick} label="Очистить"/>
     </Container>
   );
 };

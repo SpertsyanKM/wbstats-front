@@ -1,8 +1,6 @@
-import {FinancialData, FinancialDataWrapper} from '../../modules/goodAnalytics/types';
+import {FinancialData, FinancialDataInterval, FinancialDataFetcher, GoodAnalyticsService} from '../../modules/goodAnalytics';
 import {ChartData, ChartDot, ChartLine} from '../../components/chart';
 import {Color} from '../../components/common/styling';
-import {FinancialDataInterval} from './types';
-import {FinancialDataFetcher, GoodAnalyticsService} from '../../modules/goodAnalytics/service';
 
 type FinancialDataToChartConverter = (
   financialDataPerInterval: Record<string, FinancialData>,

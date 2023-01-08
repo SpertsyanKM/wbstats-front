@@ -51,3 +51,23 @@ export const WbBoxIdInput = styled(Input)`
   flex: 0;
   margin-right: ${Padding.l};
 `;
+
+export const AddBoxesRow = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: ${Padding.l};
+`;
+
+export const AddBoxesButton = styled(Button).attrs({
+  buttonType: ButtonType.Secondary
+})`
+`;
+
+export const WbBoxCountInput = styled(Input)`
+  flex: 0;
+  margin-right: ${Padding.l};
+  width: 100px;
+`;

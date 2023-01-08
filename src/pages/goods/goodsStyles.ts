@@ -54,3 +54,9 @@ export const ClickableRow = styled.tr`
 export const CenteredSell = styled.td`
   text-align: center;
 `;
+
+export const Buttons = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+`;
