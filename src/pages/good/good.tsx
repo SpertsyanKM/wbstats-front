@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {useSelector} from 'react-redux';
-import {selectGoodById} from '../../modules/goods/selectors';
-import {GoodAnalyticsService} from '../../modules/goodAnalytics/service';
-import {getSku} from '../../modules/goods/utils';
-import {DataPerInterval} from '../../modules/goodAnalytics/types';
+import {selectGoodById, getSku} from '../../modules/goods';
+import {GoodAnalyticsService, DataPerInterval} from '../../modules/goodAnalytics';
 import Loader from '../../components/common/loader';
 import {convertSalesPerIntervalToChart} from './utils';
 import {Content, GoodTitle, SectionTitle, StyledChart, StyledTable, TitleRow} from './goodStyles';

@@ -33,7 +33,7 @@ export type FinancialDataWrapper = {
 };
 
 export type FinancialDataPerGoodWrapper = {
-  financialDataPerInterval: Record<number, FinancialDataWrapper>;
+  financialDataPerGood: Record<string, FinancialDataWrapper>;
   lastReportDate: string | null;
 };
 
@@ -42,3 +42,7 @@ export enum FinancialDataInterval {
   PER_WEEK,
   PER_MONTH
 }
+
+export type GoodSalesLastMonth = {
+  salesLastMonth: Record<number, number>;
+};

@@ -9,7 +9,7 @@ import {
   LoadStocksRow,
   LastStocksLoadingDate,
   CenteredSell,
-  Buttons,
+  Buttons, StyledChart,
 } from './goodsStyles';
 import Loader from '../../components/common/loader';
 import {useDispatch, useSelector} from 'react-redux';
@@ -21,6 +21,7 @@ import {useFilePicker} from 'use-file-picker';
 import {FinancialDataInterval, FinancialDataPerGoodWrapper} from '../../modules/goodAnalytics';
 import {getFinancialDataPerGoodFetcherByInterval} from './utils';
 import Button, {ButtonSize, ButtonType} from '../../components/common/button';
+import {convertFinancialDataToChart} from '../finances/utils';
 
 type Props = {};
 
@@ -87,8 +88,6 @@ const Goods: React.FC<Props> = () => {
     loadFinancialData()
   }, [loadFinancialData]);
 
-  console.log('!financialData', financialDataPerGood);
-
   const lastLoadingDate = Object.values(wbStocks)[0]?.requestDate
   const areStocksLoaded = !!lastLoadingDate
   const stocksLoadingMessage = isLoadingStocks
@@ -121,7 +120,7 @@ const Goods: React.FC<Props> = () => {
           <TitleRow>
             <CenteredSell>Артикул</CenteredSell>
             <CenteredSell>Название</CenteredSell>
-            <CenteredSell>Баркод</CenteredSell>
+            <CenteredSell>Продажи</CenteredSell>
             {areStocksLoaded && (
               <>
                 <CenteredSell>Доступно для продажи</CenteredSell>
@@ -146,7 +145,13 @@ const Goods: React.FC<Props> = () => {
                 <ClickableRow key={good.id} onClick={() => onGoodClick(good.id)}>
                   <td>{good.originSku}{good.colorSku}</td>
                   <td>{good.name}</td>
-                  <td>{good.barcode}</td>
+                  <td>
+                    {financialDataPerGood && financialDataPerGood.financialDataPerGood && financialDataPerGood.financialDataPerGood[good.id] && (
+                      <StyledChart data={convertFinancialDataToChart(
+                        financialDataPerGood.financialDataPerGood[good.id].financialDataPerInterval, true)}
+                      />
+                    )}
+                  </td>
                   {areStocksLoaded && (
                     <>
                       <CenteredSell>{stocks?.quantity}</CenteredSell>

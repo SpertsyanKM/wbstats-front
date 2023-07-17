@@ -4,9 +4,11 @@ import {Color} from '../../components/common/styling';
 
 type FinancialDataToChartConverter = (
   financialDataPerInterval: Record<string, FinancialData>,
+  onlySales?: boolean,
 ) => ChartData;
 export const convertFinancialDataToChart: FinancialDataToChartConverter = (
   financialDataPerInterval,
+  onlySales = false,
 ) => {
   const keys = Object.keys(financialDataPerInterval);
   const earningDots: ChartDot[] = keys.map(xValue => ({
@@ -46,11 +48,13 @@ export const convertFinancialDataToChart: FinancialDataToChartConverter = (
     dots: deliveryDots,
   };
 
+  const lines = onlySales ? [earningsLine] : [earningsLine, returnsLine, cancellationsLine, deliveryLine];
+
   const chartData: ChartData = {
     xAxisName: "Дата",
     xAxisFrom: keys[0],
     yAxisName: "Продажи",
-    lines: [earningsLine, returnsLine, cancellationsLine, deliveryLine],
+    lines,
   };
 
   return chartData;

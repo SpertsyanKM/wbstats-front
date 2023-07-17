@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Block from '../../components/common/block';
 import Button, {ButtonType} from '../../components/common/button';
 import {Color, Padding, Typography} from '../../components/common/styling';
+import Chart from '../../components/chart';
 
 export const Container = styled(Block).attrs({
   root: true,
@@ -59,4 +60,13 @@ export const Buttons = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: row;
+`;
+
+export const StyledChart = styled(Chart).attrs({
+  width: 500,
+  height: 80,
+  noLegend: true,
+})`
+  margin-top: ${Padding.l};
+  align-self: center;
 `;

@@ -9,6 +9,7 @@ type Props = {
   width?: number;
   height?: number;
   className?: string;
+  noLegend?: boolean;
 };
 
 const Chart: React.FC<Props> = ({
@@ -16,6 +17,7 @@ const Chart: React.FC<Props> = ({
   height,
   data,
   className,
+  noLegend = false,
 }) => {
   const convertedData = convertChartData(data.lines);
 
@@ -36,7 +38,7 @@ const Chart: React.FC<Props> = ({
       <XAxis dataKey={xAxisDataKey} name={data.xAxisName} from={data.xAxisFrom} />
       <YAxis name={data.yAxisName} from={data.yAxisFrom} />
       <Tooltip/>
-      <Legend/>
+      {!noLegend && <Legend/>}
       {data.lines.map((chartLine, index) => (
         <Line
           key={chartLine.name}
