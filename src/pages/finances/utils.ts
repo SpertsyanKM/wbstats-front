@@ -17,6 +17,10 @@ export const convertFinancialDataToChart: FinancialDataToChartConverter = (
     xAxis: xValue,
     yAxis: -financialDataPerInterval[xValue].returnOutcomes,
   }));
+  const cancellationDots: ChartDot[] = keys.map(xValue => ({
+    xAxis: xValue,
+    yAxis: -financialDataPerInterval[xValue].cancellationOutcomes,
+  }));
   const deliveryDots: ChartDot[] = keys.map(xValue => ({
     xAxis: xValue,
     yAxis: financialDataPerInterval[xValue].deliveryCosts,
@@ -28,12 +32,17 @@ export const convertFinancialDataToChart: FinancialDataToChartConverter = (
     color: Color.ChartGreen,
   };
   const returnsLine: ChartLine = {
-    name: 'Возвраты',
+    name: 'Возвраты (WB)',
     dots: returnsDots,
     color: Color.ChartRed,
   };
+  const cancellationsLine: ChartLine = {
+    name: 'Отмены (Ozon)',
+    dots: cancellationDots,
+    color: Color.ChartRed,
+  };
   const deliveryLine: ChartLine = {
-    name: 'Доставка',
+    name: 'Доставка (WB)',
     dots: deliveryDots,
   };
 
@@ -41,7 +50,7 @@ export const convertFinancialDataToChart: FinancialDataToChartConverter = (
     xAxisName: "Дата",
     xAxisFrom: keys[0],
     yAxisName: "Продажи",
-    lines: [earningsLine, returnsLine, deliveryLine],
+    lines: [earningsLine, returnsLine, cancellationsLine, deliveryLine],
   };
 
   return chartData;

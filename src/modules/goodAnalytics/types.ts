@@ -21,6 +21,8 @@ export type FinancialData = {
   deliveryCount: number;
   returnOutcomes: number;
   returnCount: number;
+  cancellationOutcomes: number;
+  cancellationCount: number;
   totalEarnings: number;
 };
 

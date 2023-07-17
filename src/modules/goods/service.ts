@@ -14,7 +14,12 @@ const enrichGoods: GoodsEnricher = async file => {
 
 type WbReportUploader = (file: File) => Promise<SimpleBooleanResponse>;
 const uploadWbReport: WbReportUploader = async file => {
-  return await POST_MULTIFORM<SimpleBooleanResponse>('goodTransactions/enrichFromCsv', file);
+  return await POST_MULTIFORM<SimpleBooleanResponse>('goodTransactions/enrichFromWbCsv', file);
+};
+
+type OzonReportUploader = (file: File) => Promise<SimpleBooleanResponse>;
+const uploadOzonReport: OzonReportUploader = async file => {
+  return await POST_MULTIFORM<SimpleBooleanResponse>('goodTransactions/enrichFromOzonCsv', file);
 };
 
 type WbStocksFetcher = () => Promise<WBStock[]>;
@@ -26,5 +31,6 @@ export const GoodsService = {
   fetchGoods,
   enrichGoods,
   uploadWbReport,
+  uploadOzonReport,
   fetchWbStocks,
 };

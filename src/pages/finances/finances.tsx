@@ -16,6 +16,7 @@ import {useFilePicker} from 'use-file-picker';
 import {convertFinancialDataToChart, getFinancialDataFetcherByInterval, getFinancialDataTitleByInterval} from './utils';
 import Button, {ButtonSize, ButtonType} from '../../components/common/button';
 import {formatPrice} from '../../utils/string';
+import {Marketplace} from '../../modules/marketplace';
 
 type Props = {};
 
@@ -24,6 +25,7 @@ const Finances: React.FC<Props> = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isUploadingReport, setIsUploadingReport] = useState(false);
   const [interval, setInterval] = useState(FinancialDataInterval.PER_DAY);
+  const [marketplace, setMarketplace] = useState(Marketplace.WILDBERRIES);
   const [openFileSelector, {
     plainFiles,
     loading: isLoadingFile,
@@ -53,15 +55,22 @@ const Finances: React.FC<Props> = () => {
     if (!plainFiles.length) {
       return;
     }
+
     setIsUploadingReport(true);
-    GoodsService.uploadWbReport(plainFiles[0])
+    const method = marketplace === Marketplace.WILDBERRIES
+      ? GoodsService.uploadWbReport
+      : GoodsService.uploadOzonReport;
+
+    console.log(marketplace);
+
+    method(plainFiles[0])
       .then(response => {
         if (response.success) {
           loadFinancialData()
         }
       })
       .finally(() => setIsUploadingReport(false));
-  }, [plainFiles, setIsUploadingReport, loadFinancialData]);
+  }, [plainFiles, setIsUploadingReport, loadFinancialData, marketplace]);
 
   const additionalText = !!financialDataWrapper?.lastReportDate
     ? `Последняя дата в отчётах - ${financialDataWrapper?.lastReportDate}`
@@ -89,14 +98,16 @@ const Finances: React.FC<Props> = () => {
           <StyledTable>
             <tbody>
             <TitleRow>
-              <td>Дата</td>
-              <td>Продажи после комиссий</td>
-              <td>Количество продаж</td>
-              <td>Стоимость возвратов</td>
-              <td>Количество возвратов</td>
-              <td>Расходы на логистику</td>
-              <td>Количество заказов/доставок</td>
-              <td>Доход</td>
+              <td>Начальная дата</td>
+              <td>Продажи (WB + Ozon)</td>
+              <td>Кол-во продаж (WB + Ozon)</td>
+              <td>Сумма возвратов (WB)</td>
+              <td>Кол-во возвратов (WB)</td>
+              <td>Сумма отмен (Ozon)</td>
+              <td>Кол-во отмен (Ozon)</td>
+              <td>Расходы на логистику (WB)</td>
+              <td>Кол-во заказов/доставок (WB)</td>
+              <td>Доход (WB + Ozon)</td>
             </TitleRow>
             <TitleRow>
               <td>Итого:</td>
@@ -104,6 +115,8 @@ const Finances: React.FC<Props> = () => {
               <td>{financialDataWrapper.totals.saleCount}</td>
               <td>{formatPrice(financialDataWrapper.totals.returnOutcomes)}</td>
               <td>{financialDataWrapper.totals.returnCount}</td>
+              <td>{formatPrice(financialDataWrapper.totals.cancellationOutcomes)}</td>
+              <td>{financialDataWrapper.totals.cancellationCount}</td>
               <td>{formatPrice(financialDataWrapper.totals.deliveryCosts)}</td>
               <td>{financialDataWrapper.totals.deliveryCount}</td>
               <td>{formatPrice(financialDataWrapper.totals.totalEarnings)}</td>
@@ -116,6 +129,8 @@ const Finances: React.FC<Props> = () => {
                   <td>{dataPerInterval[intervalBeginning].saleCount}</td>
                   <td>{formatPrice(dataPerInterval[intervalBeginning].returnOutcomes)}</td>
                   <td>{dataPerInterval[intervalBeginning].returnCount}</td>
+                  <td>{formatPrice(dataPerInterval[intervalBeginning].cancellationOutcomes)}</td>
+                  <td>{dataPerInterval[intervalBeginning].cancellationCount}</td>
                   <td>{formatPrice(dataPerInterval[intervalBeginning].deliveryCosts)}</td>
                   <td>{dataPerInterval[intervalBeginning].deliveryCount}</td>
                   <td>{formatPrice(dataPerInterval[intervalBeginning].totalEarnings)}</td>
@@ -128,7 +143,18 @@ const Finances: React.FC<Props> = () => {
       )}
       <UploadReportButton
         label="Загрузить отчёт о продажах WB"
-        onClick={onUploadReportClick}
+        onClick={() => {
+          setMarketplace(Marketplace.WILDBERRIES);
+          onUploadReportClick()
+        }}
+        isLoading={isLoadingFile || isUploadingReport}
+      />
+      <UploadReportButton
+        label="Загрузить отчёт о продажах OZON"
+        onClick={() => {
+          setMarketplace(Marketplace.OZON);
+          onUploadReportClick()
+        }}
         isLoading={isLoadingFile || isUploadingReport}
       />
     </Container>
